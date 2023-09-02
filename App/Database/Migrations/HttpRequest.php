@@ -23,10 +23,10 @@ class HttpRequest {
   
   EOF;
 
-  public function getSql(): string {
+  public function __get(string $name) {
 
-    return $this->sql;
+    return $this->$name ?? null;
 
   }
-  
+
 }

@@ -36,21 +36,9 @@ class HttpRequest {
 
   ];
 
-  public function getDatabaseTableName(): string {
+  public function __get(string $name) {
 
-    return $this->database_table_name;
-
-  }
-
-  public function getDatabaseFieldTypes(): array {
-
-    return $this->database_field_types;
-
-  }
-
-  public function getEntityDatabaseMap(): array {
-
-    return $this->entity_database_map;
+    return $this->$name ?? null;
 
   }
 

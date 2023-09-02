@@ -13,7 +13,7 @@ class SQLite3Database {
     $this->database = new SQLite3($db_filepath);
 
     foreach ($db_migrations as $migration) {
-      $sql = $migration->getSql();
+      $sql = $migration->sql;
       $this->database->exec($sql);
     }
 
@@ -22,11 +22,11 @@ class SQLite3Database {
   public function saveEntity(object $entity, object $database_connector): void {
 
     // Set the required variables.
-    $database_table_name      = $database_connector->getDatabaseTableName();
-    $entity_database_map      = $database_connector->getEntityDatabaseMap();
+    $database_table_name      = $database_connector->database_table_name;
+    $entity_database_map      = $database_connector->entity_database_map;
     $database_fields          = array_values($entity_database_map);
     $last_database_field      = end($database_fields); reset($database_fields);
-    $database_field_types     = $database_connector->getDatabaseFieldTypes();
+    $database_field_types     = $database_connector->database_field_types;
 
     // Generate the SQL for a prepared statement.
     $sql  = "INSERT INTO $database_table_name (" . PHP_EOL;
