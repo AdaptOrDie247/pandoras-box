@@ -10,7 +10,7 @@ use DateTime;
 class HttpRequest {
 
   private $request_time;
-  private $remote_addr;
+  private $remote_address;
   private $remote_port;
   private $request_uri;
   private $request_method;
@@ -35,7 +35,7 @@ class HttpRequest {
   public function populateInfoFromServerVar(array $server): void {
 
     $this->request_time           = new HttpRequestProperty('Request Time',           $server['REQUEST_TIME']);
-    $this->remote_addr            = new HttpRequestProperty('Remote Address',         $server['REMOTE_ADDR']);
+    $this->remote_address         = new HttpRequestProperty('Remote Address',         $server['REMOTE_ADDR']);
     $this->remote_port            = new HttpRequestProperty('Remote Port',            $server['REMOTE_PORT']);
     $this->request_uri            = new HttpRequestProperty('Request URI',            $server['REQUEST_URI']);
     $this->request_method         = new HttpRequestProperty('Request Method',         $server['REQUEST_METHOD']);
@@ -59,7 +59,7 @@ class HttpRequest {
     $info = '';
     
     $info .= sprintf("%- 25s %s\n", "{$this->request_time->name}:",          $this->getDateTimeString($this->request_time->value));
-    $info .= sprintf("%- 25s %s\n", "{$this->remote_addr->name}:",           $this->remote_addr->value);
+    $info .= sprintf("%- 25s %s\n", "{$this->remote_address->name}:",        $this->remote_address->value);
     $info .= sprintf("%- 25s %s\n", "{$this->remote_port->name}:",           $this->remote_port->value);
     $info .= sprintf("%- 25s %s\n", "{$this->request_uri->name}:",           $this->request_uri->value);
     $info .= sprintf("%- 25s %s\n", "{$this->request_method->name}:",        $this->request_method->value);
