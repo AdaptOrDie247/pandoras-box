@@ -21,7 +21,7 @@ class SQLite3Database {
 
   public function saveEntity(object $entity, object $database_connector): void {
 
-    // Set the variables we'll need.
+    // Set the required variables.
     $database_table_name      = $database_connector->getDatabaseTableName();
     $entity_database_map      = $database_connector->getEntityDatabaseMap();
     $database_fields          = array_values($entity_database_map);
