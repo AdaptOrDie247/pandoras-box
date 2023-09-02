@@ -4,6 +4,6 @@
   <link rel="icon" href="data:;base64,=">
 </head>
 <body>
-  <h1>Pandora's Box</h1>
+  <h1>Login</h1>
 </body>
 </html>
