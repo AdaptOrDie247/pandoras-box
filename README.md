@@ -16,11 +16,17 @@ Insecure deployment of the application can result in a system compromise, or wor
 
 ## Quick Setup
 
-1. Clone the repo.
-2. Open a terminal in the `public` folder.
-3. Run the following command: `php -S localhost:8000`.
-4. Navigate to `localhost:8000` in your web browser.
-5. Check the `writable/logs` directory for an output file.
+1. Install system dependencies: PHP, SQLite3.
+2. Git clone the repo.
+3. Install and run Composer to install the project dependencies.
+4. Create a `.env` file in the project root with the following values:
+- `time_zone`: The time zone you want to log requests in. E.g., `America/Los_Angeles`.
+- `database.directory`: The database directory. E.g., `writable/database`.
+- `database.name`: The database name. E.g., `pandoras_box.db`.
+5. Open a terminal in the `public` directory.
+6. Start the PHP web server: `php -S localhost:8000`.
+7. Navigate to `localhost:8000` in a web browser.
+8. Check the SQLite3 database for the HTTP request info.
 
 ## Notes
 
