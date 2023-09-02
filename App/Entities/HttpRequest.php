@@ -6,6 +6,7 @@ require_once 'HttpRequestProperty.php';
 
 use App\Entities\HttpRequestProperty;
 use DateTime;
+use DateTimeZone;
 
 class HttpRequest {
 
@@ -32,9 +33,12 @@ class HttpRequest {
 
   }
 
-  public function populateInfoFromServerVar(array $server): void {
+  public function populateInfoFromServerVar(array $server, DateTimeZone $local_time_zone): void {
 
-    $this->request_time           = new HttpRequestProperty('Request Time',           $server['REQUEST_TIME']);
+    // Convert request time to local time as ISO8601 string for easy reading and SQLite3 storage.
+    $iso8601_request_time = (new DateTime("@{$server['REQUEST_TIME']}"))->setTimeZone($local_time_zone)->format('c');
+
+    $this->request_time           = new HttpRequestProperty('Request Time',           $iso8601_request_time);
     $this->remote_address         = new HttpRequestProperty('Remote Address',         $server['REMOTE_ADDR']);
     $this->remote_port            = new HttpRequestProperty('Remote Port',            $server['REMOTE_PORT']);
     $this->request_uri            = new HttpRequestProperty('Request URI',            $server['REQUEST_URI']);
