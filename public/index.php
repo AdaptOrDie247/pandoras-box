@@ -4,14 +4,14 @@
 require_once __DIR__ . '/../App/Database/Connectors/HttpRequest.php';
 require_once __DIR__ . '/../App/Database/Migrations/HttpRequest.php';
 require_once __DIR__ . '/../App/Entities/HttpRequest.php';
-require_once __DIR__ . '/../App/Entities/SQLite3Database.php';
+require_once __DIR__ . '/../App/Models/BaseModel.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // Import namespaces.
 use App\Database\Connectors\HttpRequest as HttpRequestConnector;
 use App\Database\Migrations\HttpRequest as HttpRequestMigration;
 use App\Entities\HttpRequest as HttpRequestEntity;
-use App\Entities\SQLite3Database;
+use App\Models\BaseModel;
 
 // Load the dotenv file.
 Dotenv\Dotenv::createImmutable(__DIR__ . '/../')->load();
@@ -28,7 +28,7 @@ $http_request_entity->populateInfoFromServerVar($_SERVER, $local_time_zone);
 $db_migrations = [
   new HttpRequestMigration(),
 ];
-$database = new SQLite3Database($db_filepath, $db_migrations);
+$database = new BaseModel($db_filepath, $db_migrations);
 
 // Save the HTTP request entity.
 $db_connector = new HttpRequestConnector();

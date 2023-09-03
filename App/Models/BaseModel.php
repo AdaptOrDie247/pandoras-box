@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models;
 
 use SQLite3;
 
-class SQLite3Database {
+class BaseModel {
 
   private $database;
 
