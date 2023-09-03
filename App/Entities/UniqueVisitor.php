@@ -7,6 +7,13 @@ class UniqueVisitor {
   private $remote_address;
   private $http_user_agent;
 
+  public function __construct(string $remote_address, string $http_user_agent) {
+
+    $this->remote_address   = $remote_address;
+    $this->http_user_agent  = $http_user_agent;
+
+  }
+
   public function __get(string $name) {
 
     return $this->$name ?? null;
