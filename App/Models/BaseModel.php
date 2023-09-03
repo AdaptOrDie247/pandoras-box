@@ -19,14 +19,14 @@ class BaseModel {
 
   }
 
-  public function saveEntity(object $entity, object $database_connector): void {
+  public function saveEntity(object $entity, object $model, object $connector): void {
 
     // Set the required variables.
-    $database_table_name      = $database_connector->database_table_name;
-    $entity_database_map      = $database_connector->entity_database_map;
+    $database_table_name      = $model->table_name;
+    $entity_database_map      = $connector->entity_database_map;
     $database_fields          = array_values($entity_database_map);
     $last_database_field      = end($database_fields); reset($database_fields);
-    $database_field_types     = $database_connector->database_field_types;
+    $database_field_types     = $model->field_types;
 
     // Generate the SQL for a prepared statement.
     $sql  = "INSERT INTO $database_table_name (" . PHP_EOL;
