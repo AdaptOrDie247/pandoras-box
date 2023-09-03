@@ -4,6 +4,7 @@ importFiles();
 
 // Import namespaces.
 use App\Connectors\HttpRequest as HttpRequestConnector;
+use App\Connectors\UniqueVisitor as UniqueVisitorConnector;
 use App\Database\Migrations\HttpRequest as HttpRequestMigration;
 use App\Database\Migrations\UniqueVisitor as UniqueVisitorMigration;
 use App\Entities\HttpRequest as HttpRequestEntity;
@@ -24,12 +25,10 @@ $http_request_entity  = getHttpRequestEntity();
 saveHttpRequestEntity($base_model, $http_request_entity);
 
 // Get and save unique visitor entity if doesn't exist in database.
-$unique_visitor_model   = new UniqueVisitorModel($db_filepath);
-$unique_visitor_entity  = new UniqueVisitorEntity(
-  $http_request_entity->remote_address->value,
-  $http_request_entity->http_user_agent->value
-);
-saveUniqueVisitorEntityIfNotExists($unique_visitor_model, $unique_visitor_entity);
+$unique_visitor_entity      = new UniqueVisitorEntity($http_request_entity->remote_address, $http_request_entity->http_user_agent);
+$unique_visitor_model       = new UniqueVisitorModel($db_filepath);
+$unique_visitor_connector   = new UniqueVisitorConnector();
+saveUniqueVisitorEntityIfNotExists($base_model, $unique_visitor_entity, $unique_visitor_model, $unique_visitor_connector);
 
 // Show the client something.
 require_once __DIR__ . '/../App/Views/Home.php';
@@ -37,6 +36,7 @@ require_once __DIR__ . '/../App/Views/Home.php';
 function importFiles(): void {
 
   require_once __DIR__ . '/../App/Connectors/HttpRequest.php';
+  require_once __DIR__ . '/../App/Connectors/UniqueVisitor.php';
   require_once __DIR__ . '/../App/Database/Migrations/HttpRequest.php';
   require_once __DIR__ . '/../App/Database/Migrations/UniqueVisitor.php';
   require_once __DIR__ . '/../App/Entities/HttpRequest.php';
@@ -77,12 +77,11 @@ function saveHttpRequestEntity(BaseModel $base_model, HttpRequestEntity $http_re
 
 }
 
-function saveUniqueVisitorEntityIfNotExists(UniqueVisitorModel $unique_visitor_model, UniqueVisitorEntity $unique_visitor_entity): void {
+function saveUniqueVisitorEntityIfNotExists(BaseModel $base_model, UniqueVisitorEntity $entity, UniqueVisitorModel $model, UniqueVisitorConnector $connector): void {
 
-  if (!$unique_visitor_model->hasUniqueVisitorEntity($unique_visitor_entity)) {
-    echo 'Saved';
-  } else {
-    echo 'Not saved';
+  $unique_visitor_exists = $model->hasUniqueVisitorEntity($entity);
+  if (!$unique_visitor_exists) {
+    $base_model->saveEntity($entity, $model, $connector);
   }
 
 }
