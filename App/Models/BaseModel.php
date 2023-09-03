@@ -6,11 +6,19 @@ use SQLite3;
 
 class BaseModel {
 
+  private $db_filepath;
   private $database;
 
   public function __construct(string $db_filepath) {
 
-    $this->database = new SQLite3($db_filepath);
+    $this->db_filepath  = $db_filepath;
+    $this->database     = new SQLite3($db_filepath);
+
+  }
+
+  public function __get(string $name) {
+
+    return $this->$name ?? null;
 
   }
 
