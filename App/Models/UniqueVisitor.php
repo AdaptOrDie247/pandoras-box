@@ -12,6 +12,13 @@ class UniqueVisitor {
   private $database;
   private $table_name = 'unique_visitor';
 
+  private $field_types = [
+
+    'remote_address'         => 'TEXT',
+    'http_user_agent'        => 'TEXT',
+
+  ];
+
   public function __construct(string $db_filepath = null) {
 
     if (!is_null($db_filepath)) {
@@ -28,9 +35,27 @@ class UniqueVisitor {
 
   }
 
-  public function hasUniqueVisitorEntity(UniqueVisitorEntity $unique_visitor): bool {
+  public function hasUniqueVisitorEntity(UniqueVisitorEntity $entity): bool {
 
-    return false;
+    // Generate SQL.
+    $sql  = "SELECT * FROM {$this->table_name} WHERE" . PHP_EOL;
+    $sql .= "remote_address = :remote_address" . PHP_EOL;
+    $sql .= "AND" . PHP_EOL;
+    $sql .= "http_user_agent = :http_user_agent" . PHP_EOL;
+
+    // Prepare and execute SQL then retrieve result.
+    $statement = $this->database->prepare($sql);
+    $statement->bindValue(':remote_address',    $entity->remote_address,   SQLITE3_TEXT);
+    $statement->bindValue(':http_user_agent',   $entity->http_user_agent,  SQLITE3_TEXT);
+    $result         = $statement->execute();
+    $result_array   = $result->fetchArray();
+
+    // Return if database already has identical entity.
+    if ($result_array === false) {
+      return false;
+    } else {
+      return true;
+    }
 
   }
 
