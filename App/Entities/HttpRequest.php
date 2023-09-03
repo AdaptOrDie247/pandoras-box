@@ -2,9 +2,6 @@
 
 namespace App\Entities;
 
-require_once 'HttpRequestProperty.php';
-
-use App\Entities\HttpRequestProperty;
 use DateTime;
 use DateTimeZone;
 
@@ -38,16 +35,16 @@ class HttpRequest {
     // Convert request time to local time as ISO8601 string for easy reading and SQLite3 storage.
     $iso8601_request_time = (new DateTime("@{$server['REQUEST_TIME']}"))->setTimeZone($local_time_zone)->format('c');
 
-    $this->request_time           = new HttpRequestProperty('Request Time',           $iso8601_request_time);
-    $this->remote_address         = new HttpRequestProperty('Remote Address',         $server['REMOTE_ADDR']);
-    $this->remote_port            = new HttpRequestProperty('Remote Port',            $server['REMOTE_PORT']);
-    $this->request_uri            = new HttpRequestProperty('Request URI',            $server['REQUEST_URI']);
-    $this->request_method         = new HttpRequestProperty('Request Method',         $server['REQUEST_METHOD']);
-    $this->http_host              = new HttpRequestProperty('HTTP Host',              $server['HTTP_HOST']);
-    $this->http_user_agent        = new HttpRequestProperty('HTTP User Agent',        $server['HTTP_USER_AGENT']);
-    $this->http_accept            = new HttpRequestProperty('HTTP Accept',            $server['HTTP_ACCEPT']);
-    $this->http_accept_language   = new HttpRequestProperty('HTTP Accept Language',   $server['HTTP_ACCEPT_LANGUAGE']);
-    $this->http_accept_encoding   = new HttpRequestProperty('HTTP Accept Encoding',   $server['HTTP_ACCEPT_ENCODING']);
+    $this->request_time           = $iso8601_request_time;
+    $this->remote_address         = $server['REMOTE_ADDR'];
+    $this->remote_port            = $server['REMOTE_PORT'];
+    $this->request_uri            = $server['REQUEST_URI'];
+    $this->request_method         = $server['REQUEST_METHOD'];
+    $this->http_host              = $server['HTTP_HOST'];
+    $this->http_user_agent        = $server['HTTP_USER_AGENT'];
+    $this->http_accept            = $server['HTTP_ACCEPT'];
+    $this->http_accept_language   = $server['HTTP_ACCEPT_LANGUAGE'];
+    $this->http_accept_encoding   = $server['HTTP_ACCEPT_ENCODING'];
 
   }
 
@@ -62,16 +59,16 @@ class HttpRequest {
 
     $info = '';
     
-    $info .= sprintf("%- 25s %s\n", "{$this->request_time->name}:",          $this->getDateTimeString($this->request_time->value));
-    $info .= sprintf("%- 25s %s\n", "{$this->remote_address->name}:",        $this->remote_address->value);
-    $info .= sprintf("%- 25s %s\n", "{$this->remote_port->name}:",           $this->remote_port->value);
-    $info .= sprintf("%- 25s %s\n", "{$this->request_uri->name}:",           $this->request_uri->value);
-    $info .= sprintf("%- 25s %s\n", "{$this->request_method->name}:",        $this->request_method->value);
-    $info .= sprintf("%- 25s %s\n", "{$this->http_host->name}:",             $this->http_host->value);
-    $info .= sprintf("%- 25s %s\n", "{$this->http_user_agent->name}:",       $this->http_user_agent->value);
-    $info .= sprintf("%- 25s %s\n", "{$this->http_accept->name}:",           $this->http_accept->value);
-    $info .= sprintf("%- 25s %s\n", "{$this->http_accept_language->name}:",  $this->http_accept_language->value);
-    $info .= sprintf("%- 25s %s\n", "{$this->http_accept_encoding->name}:",  $this->http_accept_encoding->value);
+    $info .= sprintf("%- 25s %s\n", "Request Time:",          $this->getDateTimeString($this->request_time));
+    $info .= sprintf("%- 25s %s\n", "Remote Address:",        $this->remote_address);
+    $info .= sprintf("%- 25s %s\n", "Remote Port:",           $this->remote_port);
+    $info .= sprintf("%- 25s %s\n", "Request URI:",           $this->request_uri);
+    $info .= sprintf("%- 25s %s\n", "Request Method:",        $this->request_method);
+    $info .= sprintf("%- 25s %s\n", "HTTP Host:",             $this->http_host);
+    $info .= sprintf("%- 25s %s\n", "HTTP User Agent:",       $this->http_user_agent);
+    $info .= sprintf("%- 25s %s\n", "HTTP Accept:",           $this->http_accept);
+    $info .= sprintf("%- 25s %s\n", "HTTP Accept Language:",  $this->http_accept_language);
+    $info .= sprintf("%- 25s %s\n", "HTTP Accept Encoding:",  $this->http_accept_encoding);
 
     $info .= PHP_EOL;
 
