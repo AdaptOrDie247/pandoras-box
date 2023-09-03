@@ -21,14 +21,12 @@ $db_filepath  = __DIR__ . "/../{$_ENV['database.directory']}/{$_ENV['database.na
 $base_model   = initializeDatabase($db_filepath);
 
 // Get and save HTTP request entity.
-$http_request_entity  = getHttpRequestEntity();
-saveHttpRequestEntity($base_model, $http_request_entity);
+$http_request  = getHttpRequestEntity($_SERVER, $_ENV['time_zone']);
+saveHttpRequestEntity($base_model, $http_request);
 
 // Get and save unique visitor entity if doesn't exist in database.
-$unique_visitor_entity      = new UniqueVisitorEntity($http_request_entity->remote_address, $http_request_entity->http_user_agent);
-$unique_visitor_model       = new UniqueVisitorModel($db_filepath);
-$unique_visitor_connector   = new UniqueVisitorConnector();
-saveUniqueVisitorEntityIfNotExists($base_model, $unique_visitor_entity, $unique_visitor_model, $unique_visitor_connector);
+$unique_visitor = new UniqueVisitorEntity($http_request->remote_address, $http_request->http_user_agent);
+saveUniqueVisitorEntityIfNotExists($base_model, $unique_visitor);
 
 // Show the client something.
 require_once __DIR__ . '/../App/Views/Home.php';
@@ -48,11 +46,11 @@ function importFiles(): void {
 
 }
 
-function getHttpRequestEntity(): HttpRequestEntity {
+function getHttpRequestEntity(array $server, string $time_zone): HttpRequestEntity {
 
   $http_request_entity  = new HttpRequestEntity();
-  $local_time_zone      = new DateTimeZone($_ENV['time_zone']);
-  $http_request_entity->populateInfoFromServerVar($_SERVER, $local_time_zone);
+  $local_time_zone      = new DateTimeZone($time_zone);
+  $http_request_entity->populateInfoFromServerVar($server, $local_time_zone);
   return $http_request_entity;
 
 }
@@ -69,15 +67,18 @@ function initializeDatabase(string $db_filepath): BaseModel {
 
 }
 
-function saveHttpRequestEntity(BaseModel $base_model, HttpRequestEntity $http_request_entity): void {
+function saveHttpRequestEntity(BaseModel $base_model, HttpRequestEntity $entity): void {
 
-  $http_request_model     = new HttpRequestModel();
-  $http_request_connector = new HttpRequestConnector();
-  $base_model->saveEntity($http_request_entity, $http_request_model, $http_request_connector);
+  $model        = new HttpRequestModel();
+  $connector    = new HttpRequestConnector();
+  $base_model->saveEntity($entity, $model, $connector);
 
 }
 
-function saveUniqueVisitorEntityIfNotExists(BaseModel $base_model, UniqueVisitorEntity $entity, UniqueVisitorModel $model, UniqueVisitorConnector $connector): void {
+function saveUniqueVisitorEntityIfNotExists(BaseModel $base_model, UniqueVisitorEntity $entity): void {
+
+  $model       = new UniqueVisitorModel($base_model->db_filepath);
+  $connector   = new UniqueVisitorConnector();
 
   $unique_visitor_exists = $model->hasUniqueVisitorEntity($entity);
   if (!$unique_visitor_exists) {
