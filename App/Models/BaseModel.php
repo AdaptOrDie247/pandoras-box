@@ -51,7 +51,7 @@ class BaseModel {
     $statement = $this->database->prepare($sql);
     foreach ($entity_database_map as $entity_property => $database_field) {
       $param  = ":{$database_field}";
-      $value  = $entity->$entity_property->value;
+      $value  = $entity->$entity_property;
       $type   = constant('SQLITE3_' . $database_field_types[$database_field]);
       $statement->bindValue($param, $value, $type);
     }
