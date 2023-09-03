@@ -5,6 +5,7 @@ require_once __DIR__ . '/../App/Connectors/HttpRequest.php';
 require_once __DIR__ . '/../App/Database/Migrations/HttpRequest.php';
 require_once __DIR__ . '/../App/Database/Migrations/UniqueVisitor.php';
 require_once __DIR__ . '/../App/Entities/HttpRequest.php';
+require_once __DIR__ . '/../App/Entities/UniqueVisitor.php';
 require_once __DIR__ . '/../App/Models/BaseModel.php';
 require_once __DIR__ . '/../App/Models/HttpRequest.php';
 require_once __DIR__ . '/../App/Models/UniqueVisitor.php';
@@ -15,6 +16,7 @@ use App\Connectors\HttpRequest as HttpRequestConnector;
 use App\Database\Migrations\HttpRequest as HttpRequestMigration;
 use App\Database\Migrations\UniqueVisitor as UniqueVisitorMigration;
 use App\Entities\HttpRequest as HttpRequestEntity;
+use App\Entities\UniqueVisitor as UniqueVisitorEntity;
 use App\Models\BaseModel;
 use App\Models\HttpRequest as HttpRequestModel;
 use App\Models\UniqueVisitor as UniqueVisitorModel;
@@ -42,7 +44,16 @@ $http_request_connector = new HttpRequestConnector();
 $database->saveEntity($http_request_entity, $http_request_model, $http_request_connector);
 
 // Save unique visitor entity if applicable.
-$unique_visitor_model = new UniqueVisitorModel($db_filepath);
+$unique_visitor_model   = new UniqueVisitorModel($db_filepath);
+$unique_visitor_entity  = new UniqueVisitorEntity(
+  $http_request_entity->remote_address->value,
+  $http_request_entity->http_user_agent->value
+);
+if (!$unique_visitor_model->hasUniqueVisitorEntity($unique_visitor_entity)) {
+
+} else {
+
+}
 
 // Show the client something.
 require_once __DIR__ . '/../App/Views/Home.php';
