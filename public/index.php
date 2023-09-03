@@ -28,7 +28,8 @@ $db_filepath    = __DIR__ . "/../{$_ENV['database.directory']}/{$_ENV['database.
 $db_migrations  = [
   new HttpRequestMigration(),
 ];
-$database = new BaseModel($db_filepath, $db_migrations);
+$database = new BaseModel($db_filepath);
+$database->runMigrations($db_migrations);
 
 // Save the HTTP request entity.
 $http_request_model     = new HttpRequestModel();
