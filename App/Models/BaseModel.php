@@ -8,11 +8,15 @@ class BaseModel {
 
   private $database;
 
-  public function __construct(string $db_filepath, array $db_migrations) {
+  public function __construct(string $db_filepath) {
 
     $this->database = new SQLite3($db_filepath);
 
-    foreach ($db_migrations as $migration) {
+  }
+
+  public function runMigrations(array $migrations): void {
+
+    foreach ($migrations as $migration) {
       $sql = $migration->sql;
       $this->database->exec($sql);
     }
