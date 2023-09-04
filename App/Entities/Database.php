@@ -1,44 +1,42 @@
 <?php
 
-namespace App\Models;
+namespace App\Entities;
 
 use SQLite3;
 
-class BaseModel {
+class Database {
 
-  private $db_filepath;
   private $database;
+  private $migrations;
 
-  public function __construct(string $db_filepath) {
+  public function __construct(string $database_path) {
 
-    $this->db_filepath  = $db_filepath;
-    $this->database     = new SQLite3($db_filepath);
-
-  }
-
-  public function __get(string $name) {
-
-    return $this->$name ?? null;
+    $this->database = new SQLite3($database_path);
 
   }
 
-  public function runMigrations(array $migrations): void {
+  public function addMigration(string $migration): void {
 
-    foreach ($migrations as $migration) {
-      $sql = $migration->sql;
-      $this->database->exec($sql);
+    $this->migrations[] = $migration;
+
+  }
+
+  public function runMigrations(): void {
+
+    foreach ($this->migrations as $migration) {
+      $this->database->exec($migration);
     }
 
   }
 
-  public function saveEntity(object $entity, object $model, object $connector): void {
+  public function saveEntity(object $entity): void {
 
     // Set the required variables.
-    $database_table_name      = $model->table_name;
-    $entity_database_map      = $connector->entity_database_map;
-    $database_fields          = array_values($entity_database_map);
+    $database_table_name      = $entity::getDatabaseTableName();
+    $field_column_map         = $entity::getDatabaseFieldColumnMap();
+    $database_fields          = array_values($field_column_map);
     $last_database_field      = end($database_fields); reset($database_fields);
-    $database_field_types     = $model->field_types;
+    $column_type_map          = $entity::getDatabaseColumnTypeMap();
 
     // Generate the SQL for a prepared statement.
     $sql  = "INSERT INTO $database_table_name (" . PHP_EOL;
@@ -57,10 +55,10 @@ class BaseModel {
 
     // Prepare the SQL statement and bind the values.
     $statement = $this->database->prepare($sql);
-    foreach ($entity_database_map as $entity_property => $database_field) {
+    foreach ($field_column_map as $entity_property => $database_field) {
       $param  = ":{$database_field}";
       $value  = $entity->$entity_property;
-      $type   = constant('SQLITE3_' . $database_field_types[$database_field]);
+      $type   = constant('SQLITE3_' . $column_type_map[$database_field]);
       $statement->bindValue($param, $value, $type);
     }
     
@@ -69,4 +67,10 @@ class BaseModel {
 
   }
 
+  public function getDatabase(): SQLite3 {
+
+    return $this->database;
+
+  }
+  
 }
