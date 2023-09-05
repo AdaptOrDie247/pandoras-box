@@ -113,4 +113,19 @@ class HttpClient {
 
   }
 
+  public function getHttpClientsFromDatabase(Database $database): array {
+
+    $sql            = "SELECT rowid, * FROM " . self::getDatabaseTableName();
+    $statement      = $database->getDatabase()->prepare($sql);
+    $result         = $statement->execute();
+
+    $clients = [];
+    while ($client = $result->fetchArray()) {
+      $clients[] = $client;
+    }
+
+    return $clients;
+
+  }
+
 }
