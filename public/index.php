@@ -18,7 +18,7 @@ Dotenv\Dotenv::createImmutable(__DIR__ . '/../')->load();
 
 // Initialize the database.
 $database_path  = __DIR__ . "/../{$_ENV['database.directory']}/{$_ENV['database.name']}";
-$database = new Database($database_path);
+$database       = new Database($database_path);
 $database->addMigration(HttpRequest::getDatabaseMigration());
 $database->addMigration(HttpClient::getDatabaseMigration());
 $database->runMigrations();
