@@ -2,7 +2,7 @@
 
 Author: Daniel Gilbert (AdaptOrDie247)
 
-A honeypot written in PHP that performs passive recon on the remote host.
+A honeypot that performs passive recon on the remote host.
 
 ## WARNING
 
