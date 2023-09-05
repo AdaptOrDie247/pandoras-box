@@ -40,13 +40,6 @@ class HttpClient {
 
   ];
 
-  public function __construct(HttpRequest $http_request) {
-
-    $this->remote_address   = $http_request->remote_address;
-    $this->http_user_agent  = $http_request->http_user_agent;
-
-  }
-
   public function __get(string $name) {
 
     return $this->$name ?? null;
@@ -80,6 +73,13 @@ class HttpClient {
   public static function getDatabaseColumnTypeMap(): array {
 
     return self::DATABASE_COLUMN_TYPE_MAP;
+
+  }
+
+  public function populateFromHttpRequest(HttpRequest $http_request) {
+
+    $this->remote_address   = $http_request->remote_address;
+    $this->http_user_agent  = $http_request->http_user_agent;
 
   }
 
