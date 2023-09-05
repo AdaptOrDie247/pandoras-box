@@ -4,6 +4,8 @@
 require_once __DIR__ . '/../App/Entities/Database.php';
 require_once __DIR__ . '/../App/Entities/HttpClient.php';
 require_once __DIR__ . '/../App/Entities/HttpRequest.php';
+
+// Load Composer dependencies.
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // Import namespaces.
@@ -27,7 +29,8 @@ $http_request->populateFromServerVar($_SERVER);
 $http_request->saveToDatabase($database);
 
 // Get the HTTP client and save if unique.
-$http_client = new HttpClient($http_request);
+$http_client = new HttpClient();
+$http_client->populateFromHttpRequest($http_request);
 if ($http_client->isUniqueInDatabase($database)) {
   $http_client->saveToDatabase($database);
 }
