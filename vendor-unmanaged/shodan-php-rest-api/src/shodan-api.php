@@ -4,7 +4,13 @@
 require_once 'Colors.php';
 require_once 'Shodan.php';
 
-$key = 'Insert your API key here';
+// Load Composer dependencies.
+require_once __DIR__ . '/../../../vendor/autoload.php';
+
+// Load the dotenv file.
+Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../')->load();
+
+$key = $_ENV['shodan.api_key'];
 $client = new Shodan($key, TRUE);
 $colors = new Colors();
 
