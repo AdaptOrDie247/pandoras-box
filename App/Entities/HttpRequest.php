@@ -108,16 +108,16 @@ class HttpRequest {
 
   public function populateFromServerVar(array $server): void {
 
-    $this->request_time           = $server['REQUEST_TIME'];
-    $this->remote_address         = $server['REMOTE_ADDR'];
-    $this->remote_port            = $server['REMOTE_PORT'];
-    $this->request_uri            = $server['REQUEST_URI'];
-    $this->request_method         = $server['REQUEST_METHOD'];
-    $this->http_host              = $server['HTTP_HOST'];
-    $this->http_user_agent        = $server['HTTP_USER_AGENT'];
-    $this->http_accept            = $server['HTTP_ACCEPT'];
-    $this->http_accept_language   = $server['HTTP_ACCEPT_LANGUAGE'];
-    $this->http_accept_encoding   = $server['HTTP_ACCEPT_ENCODING'];
+    $this->request_time           = $server['REQUEST_TIME']           ?? 'Not Specified';
+    $this->remote_address         = $server['REMOTE_ADDR']            ?? 'Not Specified';
+    $this->remote_port            = $server['REMOTE_PORT']            ?? 'Not Specified';
+    $this->request_uri            = $server['REQUEST_URI']            ?? 'Not Specified';
+    $this->request_method         = $server['REQUEST_METHOD']         ?? 'Not Specified';
+    $this->http_host              = $server['HTTP_HOST']              ?? 'Not Specified';
+    $this->http_user_agent        = $server['HTTP_USER_AGENT']        ?? 'Not Specified';
+    $this->http_accept            = $server['HTTP_ACCEPT']            ?? 'Not Specified';
+    $this->http_accept_language   = $server['HTTP_ACCEPT_LANGUAGE']   ?? 'Not Specified';
+    $this->http_accept_encoding   = $server['HTTP_ACCEPT_ENCODING']   ?? 'Not Specified';
 
   }
 
