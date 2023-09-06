@@ -2,7 +2,11 @@
 
 Author: Daniel Gilbert (AdaptOrDie247)
 
-A honeypot that performs passive recon on the remote host.
+A honeypot that logs traffic, with accompanying tools to analyze HTTP clients as well as perform passive recon on the client hosts.
+
+<img src="images/log-traffic.png" />
+
+<img src="images/analyze-and-recon.png" />
 
 ## WARNING
 
@@ -24,4 +28,4 @@ Insecure deployment of the application can result in a system compromise, or wor
 7.  Navigate to `localhost:8000` in a web browser to log the request.
 8.  Open a terminal in the `tools` directory.
 9.  List the HTTP clients: `./get-http-clients.php`.
-10. Perform recon on an IP address: `./recon-ip-address.php IP_ADDRESS`.
+10. Perform passive recon on an IP address: `./recon-ip-address.php IP_ADDRESS`.
