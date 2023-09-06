@@ -1,12 +1,14 @@
 #!/usr/bin/env php
 <?php
 
+// Import files.
 require_once __DIR__ . '/../App/Entities/Database.php';
 require_once __DIR__ . '/../App/Entities/HttpClient.php';
 
 // Load Composer dependencies.
 require_once __DIR__ . '/../vendor/autoload.php';
 
+// Import namespaces.
 use App\Entities\Database;
 use App\Entities\HttpClient;
 
