@@ -17,7 +17,7 @@ $shodan_api     = new Shodan($shodan_api_key, TRUE);
 // Get IP address argument, and print usage if missing.
 $ip_address = $argv[1] ?? null;
 if (is_null($ip_address)) {
-  echo "Usage: {$argv[0]} IP_ADDRESS";
+  echo "Usage: {$argv[0]} IP_ADDRESS\n";
   exit(1);
 }
 
